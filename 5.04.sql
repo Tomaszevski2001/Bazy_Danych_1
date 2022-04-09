@@ -7,11 +7,17 @@ CREATE TABLE rozliczenia.godziny (id_godziny INTEGER PRIMARY KEY, data Date NOT 
 CREATE TABLE rozliczenia.premie (id_premii INTEGER PRIMARY KEY, rodzj NVARCHAR(20) NOT NULL, kwota FLOAT Not Null);
 CREATE TABLE rozliczenia.pensje (id_pensji INTEGER PRIMARY KEY , stanowisko VARCHAR(20) NOT NULL ,kwota FLOAT NOT NULL, id_premii INTEGER FOREIGN KEY REFERENCES rozliczenia.premie (id_premii) Not Null );
 
-----PODPUNKT D DODANIE KLUCZÓW OBCYCH 
+----RELACJE MIÊDZY TABELAMI
+--KIEDY CHCEMY SIÊ ODWO£AC DO WIÊCEJ NI¯ JEDNEGO ATRYBUTU
+-- KLUCZ G£ÓNY Z£O¯ONY 
 
-ALTER TABLE rozliczenia.pracownicy ADD id_pracownika INT NOT NULL, CONSTRAINT FK_id_pracownika_godziny FOREIGN KEY (id_pracownika) REFERENCES rozliczenia.godziny (id_pracownika);
+ALTER TABLE rozliczenia.premie ADD id_pracownika INT , CONSTRAINT FK_ID_PRACOWNIKA_PREMIE FOREIGN KEY (id_pracownika) REFERENCES rozliczenia.pracownicy (id_pracownika);
+																								--NAZWA KLUCZA G£OWNEGO 
 
-ALTER TABLE rozliczenia.premie ADD id_pensji INT, CONSTRAINT FK_id_pensji FOREIGN KEY (id_pensji) REFERENCES rozliczenia.pensje (id_pensji);
+----¯LE(CHYBA)
+
+--ALTER TABLE rozliczenia.pracownicy ADD id_pracownika INT NOT NULL, CONSTRAINT FK_id_pracownika_godziny FOREIGN KEY (id_pracownika) REFERENCES rozliczenia.godziny (id_pracownika);
+--ALTER TABLE rozliczenia.premie ADD id_pensji INT, CONSTRAINT FK_id_pensji FOREIGN KEY (id_pensji) REFERENCES rozliczenia.pensje (id_pensji);
 
 
 
@@ -74,7 +80,7 @@ select * from rozliczenia.pensje;
 -----------------------------------------------------------------------------
 --5. Za pomoc¹ zapytania SQL wyœwietl nazwiska pracowników i ich adresy
 
-SELECT imie , adres  FROM rozliczenia.pracownicy;
+SELECT imie , adres  FROM rozliczenia.pracownicy WHERE imie ='Tomasz';
 
 
 -- 6.Napisz zapytanie, które przekonwertuje datê w tabeli godziny tak, aby wyœwietlana by³a informacja jaki to dzieñ tygodnia i jaki miesi¹c
@@ -94,6 +100,7 @@ ADD kwota_netto float;
 --Sprawdzenie czy istnieje 
 
 select * from rozliczenia.pensje;
+
 --Zmiana nazwy kolumny
 
 EXEC sp_rename 'rozliczenia.pensje.kwota','kwota_brutto';
